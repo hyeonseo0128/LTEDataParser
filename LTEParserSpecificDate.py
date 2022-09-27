@@ -1,9 +1,6 @@
 import json
 import csv
 import requests
-from datetime import datetime
-
-# now = datetime.now()
 
 HOST = 'gcs.iotocean.org:7579'
 CSEbase = 'Mobius'
@@ -61,12 +58,13 @@ def parseLTEData(List):
             RSSI = con.get('RSSI')
             parseData = [ct[0:8], Carrier, Latitude, Longitude, Altitude, RSRP, RSRQ, RSSI]
             saveCSV(Data=parseData)
-
+    print('==Finish Parse LTE Data==')
 
 def saveCSV(Data):
     global DefineKeys
     global targetDate
     global writer
+
 
     with open(DroneName + '-' + targetDate[0:8] + ".csv", 'a', newline='') as file:
         writer = csv.writer(file)

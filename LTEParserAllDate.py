@@ -1,9 +1,6 @@
 import json
 import csv
 import requests
-from datetime import datetime
-
-# now = datetime.now()
 
 HOST = 'gcs.iotocean.org:7579'
 CSEbase = 'Mobius'
@@ -38,7 +35,6 @@ def GetDataList():
         cinList = json.loads(response.text)['m2m:rsp']['m2m:cin']
 
         parseLTEData(List=cinList)
-        # print(cinList)
 
     except Exception as e:
         print(e)
@@ -60,19 +56,20 @@ def parseLTEData(List):
         RSSI = con.get('RSSI')
         parseData = [ct[0:8], Carrier, Latitude, Longitude, Altitude, RSRP, RSRQ, RSSI]
         saveCSV(Data=parseData)
-        # data.append(parseData)
-        # print(parseData)
-
+    print('==Finish Parse LTE Data==')
 
 def saveCSV(Data):
     global DefineKeys
     global targetDate
     global writer
 
-    with open(DroneName + '-since' + targetDate[0:8] + ".csv", 'a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(Data)
+    try:
+        with open(DroneName + '-since' + targetDate[0:8] + ".csv", 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(Data)
 
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     with open(DroneName + '-since' + targetDate[0:8] + ".csv", 'w') as file:
